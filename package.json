@@ -1,0 +1,16 @@
+{
+  "name": "jons_logs",
+  "version": "1.0.0",
+  "description": "programming logs for my learning",
+  "main": "makeLog.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node makeLog.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "moment": "^2.21.0",
+    "open-in-editor": "^2.2.0"
+  }
+}
