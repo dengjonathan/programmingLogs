@@ -23,7 +23,7 @@ const editor = openInEditor.configure({
   line: 8,
 });
 
-const createNewLog = () => {
+exports.createNewLog = () => {
   // TODO make sure doesn't overwrrite exisitng file
   console.log(`creating new file for ${TODAY.format('ll')}...`);
   fs.writeFile(
@@ -46,10 +46,10 @@ const createNewLog = () => {
   )
 }
 
-const backUpLogsToGit = () => {
+exports.backUpLogsToGit = () => {
   execGitCmd(['add', DIRECTORY])
     .then(() => {
-      console.log('commiting latest updates...');
+      console.log('committing latest updates...');
       execGitCmd(['commit', '-m', `update with logs as of ${TODAY.format('ll')}`]);
     })
     .then(() => {
