@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "gulp": "^3.9.1",
+    "gulp-watch": "^5.0.0",
     "moment": "^2.21.0",
     "open-in-editor": "^2.2.0",
     "run-git-command": "^1.0.1"

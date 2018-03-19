@@ -27,31 +27,35 @@ exports.createNewLog = () => {
   // TODO make sure doesn't overwrrite exisitng file
   if (fs.existsSync(FILE_NAME)) {
     console.warn(`file ${FILE_NAME} already exists, not creating new one`)
-    return;
+    return Promise.resolve();
   }
   console.log(`creating new file for ${TODAY.format('ll')}...`);
-  fs.writeFile(
-    FILE_NAME,
-    HEADER,
-    (err, success) => {
-      if (err) {
-        console.log('Error writing file: ' + err);
-      } else {
-        console.log(`Successfully created new log for ${TODAY.format('ll')}`);
-        console.log('Opening file...')
-        // oh no callback hell
-        editor.open(FILE_NAME)
-          .then(success => {
-            console.log(`opened file ${FILE_NAME}`);
-          })
-          .catch(err => console.log('error opening: ', err))
+  return new Promise((res, rej) => {
+    fs.writeFile(
+      FILE_NAME,
+      HEADER,
+      (err, success) => {
+        if (err) {
+          console.log('Error writing file: ' + err);
+          reject(err);
+        } else {
+          console.log(`Successfully created new log for ${TODAY.format('ll')}`);
+          console.log('Opening file...')
+          resolve(
+            editor.open(FILE_NAME)
+              .then(success => {
+                console.log(`opened file ${FILE_NAME}`);
+              })
+              .catch(err => console.log('error opening: ', err))
+          );
+        }
       }
-    }
-  )
+    )
+  });
 }
 
 exports.backUpLogsToGit = () => {
-  execGitCmd(['add', DIRECTORY])
+  return execGitCmd(['add', DIRECTORY])
     .then(() => {
       console.log('committing latest updates...');
       execGitCmd(['commit', '-m', `update with logs as of ${TODAY.format('ll')}`]);
