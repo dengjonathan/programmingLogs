@@ -9,5 +9,5 @@ gulp.task('create', createNewLog);
 gulp.task('backup', backUpLogsToGit);
 
 gulp.task('default', () => {
-  gulp.lastRun('create', 'backup');
+  gulp.run('create', 'backup');
 });

@@ -25,6 +25,10 @@ const editor = openInEditor.configure({
 
 exports.createNewLog = () => {
   // TODO make sure doesn't overwrrite exisitng file
+  if (fs.existsSync(FILE_NAME)) {
+    console.warn(`file ${FILE_NAME} already exists, not creating new one`)
+    return;
+  }
   console.log(`creating new file for ${TODAY.format('ll')}...`);
   fs.writeFile(
     FILE_NAME,
@@ -61,6 +65,3 @@ exports.backUpLogsToGit = () => {
       console.error(`Error in git ops ${err}`);
     });
 };
-
-createNewLog();
-backUpLogsToGit();
