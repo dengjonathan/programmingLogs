@@ -24,6 +24,7 @@ const editor = openInEditor.configure({
 });
 
 const createNewLog = () => {
+  // TODO make sure doesn't overwrrite exisitng file
   console.log(`creating new file for ${TODAY.format('ll')}...`);
   fs.writeFile(
     FILE_NAME,
