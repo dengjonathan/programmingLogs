@@ -30,7 +30,7 @@ exports.createNewLog = () => {
     return Promise.resolve();
   }
   console.log(`creating new file for ${TODAY.format('ll')}...`);
-  return new Promise((res, rej) => {
+  return new Promise((resolve, reject) => {
     fs.writeFile(
       FILE_NAME,
       HEADER,
