@@ -55,7 +55,11 @@ exports.createNewLog = () => {
 }
 
 exports.backUpLogsToGit = () => {
-  return execGitCmd(['add', DIRECTORY])
+  console.log('pulling latest from remote');
+  return execGitCmd(['pull', 'origin', 'master'])
+    .then(() => {
+      execGitCmd(['add', DIRECTORY]);
+    })
     .then(() => {
       console.log('committing latest updates...');
       execGitCmd(['commit', '-m', `update with logs as of ${TODAY.format('ll')}`]);
