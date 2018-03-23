@@ -23,9 +23,10 @@ const editor = openInEditor.configure({
   line: 8,
 });
 
-exports.createNewLog = () => {
-  // TODO make sure doesn't overwrrite exisitng file
-  if (fs.existsSync(FILE_NAME)) {
+const checkIfLogExists = () => fs.existsSync(FILE_NAME);
+
+const createNewLog = () => {
+  if (checkIfLogExists()) {
     console.warn(`file ${FILE_NAME} already exists, not creating new one`)
     return Promise.resolve();
   }
@@ -54,7 +55,7 @@ exports.createNewLog = () => {
   });
 }
 
-exports.backUpLogsToGit = () => {
+backUpLogsToGit = () => {
   console.log('pulling latest from remote');
   return execGitCmd(['pull', 'origin', 'master'])
     .then(() => {
@@ -72,4 +73,10 @@ exports.backUpLogsToGit = () => {
     .catch(err => {
       console.error(`Error in git ops ${err}`);
     });
+};
+
+module.exports = {
+  backUpLogsToGit,
+  checkIfLogExists,
+  createNewLog,
 };
