@@ -7,6 +7,7 @@ const TODAY = moment();
 const DIRECTORY = './entries/';
 const LOG_PREFIX = 'jon-log-';
 const LOG_SUFFIX = '.md';
+const DATE_FORMAT_REGEX = /\d{4}-\d{2}-\d{2}/;
 const HEADER =
 `*****************************************************************
 
@@ -23,7 +24,36 @@ const editor = openInEditor.configure({
   line: 8,
 });
 
+
 const checkIfLogExists = () => fs.existsSync(FILE_NAME);
+
+const didCreateEntryForToday = () => {
+  const {
+    lastCreated,
+  } = journalState;
+  return moment().isSame(lastCreated, 'day');
+};
+
+const updateLastCreatedEntry = (date) => {
+  date = date || Moment();
+  journalState.lastCreated = date;
+}
+
+const getLastCreatedEntryDate = () => {
+  const files = fs.readdirSync(DIRECTORY)
+  // this assumes the last file will be the latest due to numbering order
+  return moment(
+    files[files.length - 1].match(DATE_FORMAT_REGEX)[0]
+  );
+}
+
+// TODO: add trim task to get rid of unused entries
+
+// keep global vars that different functions need to access
+// TODO: deal with timezone differences
+const journalState = {
+  lastCreated: getLastCreatedEntryDate(),
+};
 
 const createNewLog = () => {
   if (checkIfLogExists()) {
@@ -41,6 +71,7 @@ const createNewLog = () => {
           reject(err);
         } else {
           console.log(`Successfully created new log for ${TODAY.format('ll')}`);
+          updateLastCreatedEntry();
           console.log('Opening file...')
           resolve(
             editor.open(FILE_NAME)
