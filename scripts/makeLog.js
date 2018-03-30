@@ -35,7 +35,7 @@ const didCreateEntryForToday = () => {
 };
 
 const updateLastCreatedEntry = (date) => {
-  date = date || Moment();
+  date = date || moment();
   journalState.lastCreated = date;
 }
 
